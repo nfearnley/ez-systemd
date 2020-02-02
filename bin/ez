@@ -1,0 +1,27 @@
+#!/bin/bash
+service=myservice
+
+binname=`basename $0`
+cmd=$1
+opt=$2
+
+if [ "$cmd" = "start" ]; then
+  systemctl --user start $service
+elif [ "$cmd" = "stop" ]; then
+  systemctl --user stop $service
+elif [ "$cmd" = "restart" ]; then
+  systemctl --user restart $service
+elif [ "$cmd" = "status" ]; then
+  systemctl --no-pager --user status $service
+elif [ "$cmd" = "log" ]; then
+  logopt="-n 20 --no-pager"
+  if [[ "$opt" =~ ^[0-9]+$ ]]; then
+    logopt="-n $opt"
+  elif [ "$opt" = "-f" ]; then
+    logopt="-f"
+  fi
+  echo LOGOPT: $logopt
+  journalctl --user -u $service $logopt
+else
+  echo Usage: $binname [start/stop/restart/status/log]
+fi
