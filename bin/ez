@@ -20,7 +20,6 @@ elif [ "$cmd" = "log" ]; then
   elif [ "$opt" = "-f" ]; then
     logopt="-f"
   fi
-  echo LOGOPT: $logopt
   journalctl --user -u $service $logopt
 else
   echo Usage: $binname [start/stop/restart/status/log]
